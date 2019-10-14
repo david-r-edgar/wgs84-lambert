@@ -1,6 +1,6 @@
 # WGS84-Lambert
 
-Provides a simple REST API for converting latitude and longitude coordinates (WGS84 / GRS80 ellipsoid) to Lambert Conic Conformal Northing/Easting coordinates (Lambert 2008 projection, as used by ngi.be).
+Provides a simple REST API for converting latitude and longitude coordinates (WGS84 / GRS80 ellipsoid) to Lambert Conic Conformal Northing/Easting coordinates (Lambert 2008 projection, as used by ngi.be) and vice versa.
 
 Implemented in PHP. Requires an HTTP server with URL rewriting (such as Apache with mod_rewrite).
 
@@ -18,6 +18,8 @@ It incorporates coordinate transformation code from https://gist.github.com/8404
 
 ## Usage
 
+### WGS84 -> Lambert
+
 `<URL base>/wgs84_lambert/[latitude]/[longitude]`
 
 - `URL base` is the HTTP-accessible location of the content directory in which WGS84-Lambert is installed.
@@ -34,6 +36,18 @@ The response will be returned as JSON:
 - `easting` and `northing` form the coordinates of the point in the Lambert 2008 projection.
 
 
+### Lambert -> WGS84
+
+`<URL base>/lambert_wgs84/[easting]/[northing]`
+
+The response will be returned as JSON:
+```
+{
+    "lat": [latitude],
+    "lng": [longitude]
+}
+```
+
 ## Example
 
 Requesting this:
@@ -43,3 +57,12 @@ will result in the following JSON response being returned:
 ```
 {"easting":649520.58724165,"northing":669808.56333803}
 ```
+
+And converting back again:
+`<URL base>/lambert_wgs84/649520.58724165/669808.56333803`
+
+will result in the following JSON response being returned:
+```
+{"lat":50.838686996363,"lng":4.36195}
+```
+(Small inaccuracies in the decimal values are to be expected.)
