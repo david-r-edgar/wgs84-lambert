@@ -10,5 +10,13 @@ Flight::route('/wgs84_lambert/@lat:[-0-9.]+/@lng:[-0-9.]+', function($lat, $lng)
     Flight::json(array('easting' => $gpoint->lccE(), 'northing' => $gpoint->lccN()));
 });
 
+Flight::route('/lambert_wgs84/@easting:[0-9.]+/@northing:[0-9.]+', function($easting, $northing){
+    $gpoint = new gPoint('WGS 84');
+    $gpoint->configLambertProjection (649328.0, 665262.0, 4.3592158333333333333333333333333, 50.797815, 49.833333333333333333333333333333, 51.166666666666666666666666666667);
+    $gpoint->setLambert($northing, $easting);
+    $gpoint->convertLCCtoLL();
+    Flight::json(array('lat' => $gpoint->lat(), 'lng' => $gpoint->long()));
+});
+
 Flight::start();
 ?>

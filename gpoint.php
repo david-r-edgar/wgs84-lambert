@@ -542,11 +542,11 @@ class gPoint
 	 */
 	public function convertLCCtoLL()
 	{
-		$e = sqrt($e2);
+		$e = sqrt($this->e2);
 
 		$phi1	= deg2rad($this->firstStdParallel);			// Latitude of 1st std parallel
 		$phi2	= deg2rad($this->secondStdParallel);		// Latitude of 2nd std parallel
-		$phio	= deg2rad($this->latOfOrigin);				// Latitude of  Origin
+		$phi0	= deg2rad($this->latOfOrigin);				// Latitude of  Origin
 		$lamdao	= deg2rad($this->longOfOrigin);				// Longitude of  Origin
 		$E		= $this->lccEasting;
 		$N		= $this->lccNorthing;
@@ -557,7 +557,7 @@ class gPoint
 		$m2 = cos($phi2) / sqrt(( 1 - $this->e2*sin($phi2)*sin($phi2)));
 		$t1 = tan((pi()/4)-($phi1/2)) / pow(( ( 1 - $e*sin($phi1) ) / ( 1 + $e*sin($phi1) )),$e/2);
 		$t2 = tan((pi()/4)-($phi2/2)) / pow(( ( 1 - $e*sin($phi2) ) / ( 1 + $e*sin($phi2) )),$e/2);
-		$to = tan((pi()/4)-($phio/2)) / pow(( ( 1 - $e*sin($phio) ) / ( 1 + $e*sin($phio) )),$e/2);
+		$to = tan((pi()/4)-($phi0/2)) / pow(( ( 1 - $e*sin($phi0) ) / ( 1 + $e*sin($phi0) )),$e/2);
 		$n	= (log($m1)-log($m2)) / (log($t1)-log($t2));
 		$F	= $m1/($n*pow($t1,$n));
 		$rf	= $this->a*$F*pow($to,$n);
@@ -567,9 +567,9 @@ class gPoint
 
 		$lamda	= $theta_/$n + $lamdao;
 		$phi0	= (pi()/2) - 2*atan($t_);
-		$phi1	= (pi()/2) - 2*atan($t_*pow(((1-$e*sin($phi0))/(1+$e*sin(phi0))),$e/2));
-		$phi2	= (pi()/2) - 2*atan($t_*pow(((1-$e*sin($phi1))/(1+$e*sin(phi1))),$e/2));
-		$phi	= (pi()/2) - 2*atan($t_*pow(((1-$e*sin($phi2))/(1+$e*sin(phi2))),$e/2));
+		$phi1	= (pi()/2) - 2*atan($t_*pow(((1-$e*sin($phi0))/(1+$e*sin($phi0))),$e/2));
+		$phi2	= (pi()/2) - 2*atan($t_*pow(((1-$e*sin($phi1))/(1+$e*sin($phi1))),$e/2));
+		$phi	= (pi()/2) - 2*atan($t_*pow(((1-$e*sin($phi2))/(1+$e*sin($phi2))),$e/2));
 
 		$this->lat 	= rad2deg($phi);
 		$this->long = rad2deg($lamda);
